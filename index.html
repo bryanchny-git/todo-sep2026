@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="header-row">
+      <h1>To Do</h1>
+      <button type="button" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </div>
+    <form id="task-form">
+      <div class="form-row">
+        <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" maxlength="500">
+        <button type="submit">Add</button>
+      </div>
+      <div class="form-row">
+        <label for="priority-input">Priority:</label>
+        <select id="priority-input">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </form>
+    <div id="priority-summary" class="priority-summary"></div>
+    <ul id="task-list"></ul></div>
+    <p id="empty-state" hidden>No tasks yet 🎉</p>
+    <div class="footer-row">
+      <span id="task-counter"></span>
+      <button type="button" id="clear-completed">Clear completed</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

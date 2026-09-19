@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do - Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="header-row">
+      <h1>To Do</h1>
+      <button type="button" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </div>
+    <form id="task-form">
+      <div class="form-row">
+        <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" maxlength="500">
+        <button type="submit">Add</button>
+      </div>
+      <div class="form-row">
+        <label for="priority-input">Priority:</label>
+        <select id="priority-input">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </form>
+    <div id="priority-summary" class="priority-summary">
+      <div class="priority-count">
+        <span class="priority-count-dot high"></span>
+        <span>2 High</span>
+      </div>
+      <div class="priority-count">
+        <span class="priority-count-dot medium"></span>
+        <span>2 Medium</span>
+      </div>
+      <div class="priority-count">
+        <span class="priority-count-dot low"></span>
+        <span>1 Low</span>
+      </div>
+    </div>
+    <ul id="task-list">
+      <li class="priority-high">
+        <input type="checkbox">
+        <span>Fix critical bug in API</span>
+        <button type="button" class="edit-btn" title="Edit task (or double-click)">✎</button>
+        <button type="button" title="Delete task">✕</button>
+      </li>
+      <li class="priority-high">
+        <input type="checkbox">
+        <span>Review team feedback</span>
+        <button type="button" class="edit-btn" title="Edit task (or double-click)">✎</button>
+        <button type="button" title="Delete task">✕</button>
+      </li>
+      <li class="priority-medium">
+        <input type="checkbox">
+        <span>Update documentation</span>
+        <button type="button" class="edit-btn" title="Edit task (or double-click)">✎</button>
+        <button type="button" title="Delete task">✕</button>
+      </li>
+      <li class="priority-medium">
+        <input type="checkbox">
+        <span>Schedule meeting</span>
+        <button type="button" class="edit-btn" title="Edit task (or double-click)">✎</button>
+        <button type="button" title="Delete task">✕</button>
+      </li>
+      <li class="priority-low">
+        <input type="checkbox">
+        <span>Buy groceries</span>
+        <button type="button" class="edit-btn" title="Edit task (or double-click)">✎</button>
+        <button type="button" title="Delete task">✕</button>
+      </li>
+    </ul>
+    <div class="footer-row">
+      <span id="task-counter">5 of 5 remaining</span>
+      <button type="button" id="clear-completed">Clear completed</button>
+    </div>
+  </div>
+  <script>
+    const themeToggle = document.getElementById("theme-toggle");
+    const THEME_KEY = "todo-theme";
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+      localStorage.setItem(THEME_KEY, theme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+
+    const savedTheme = localStorage.getItem(THEME_KEY) ||
+      (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    applyTheme(savedTheme);
+  </script>
+</body>
+</html>
