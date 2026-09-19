@@ -5,6 +5,7 @@ const MAX_TASK_LENGTH = 500;
 
 const form = document.getElementById("task-form");
 const input = document.getElementById("task-input");
+const addBtn = document.getElementById("add-btn");
 const priorityInput = document.getElementById("priority-input");
 const list = document.getElementById("task-list");
 const themeToggle = document.getElementById("theme-toggle");
@@ -12,6 +13,7 @@ const emptyState = document.getElementById("empty-state");
 const taskCounter = document.getElementById("task-counter");
 const clearCompletedBtn = document.getElementById("clear-completed");
 const prioritySummary = document.getElementById("priority-summary");
+const toastContainer = document.getElementById("toast-container");
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
@@ -68,11 +70,7 @@ function render() {
     deleteBtn.textContent = "✕";
     deleteBtn.type = "button";
     deleteBtn.title = "Delete task";
-    deleteBtn.addEventListener("click", () => {
-      if (confirm(`Delete task: "${task.text}"?`)) {
-        deleteTask(task.id);
-      }
-    });
+    deleteBtn.addEventListener("click", () => deleteTask(task.id));
 
     li.append(checkbox, span, editBtn, deleteBtn);
     list.appendChild(li);
@@ -176,9 +174,35 @@ function toggleTask(id) {
 }
 
 function deleteTask(id) {
-  tasks = tasks.filter(t => t.id !== id);
+  const index = tasks.findIndex(t => t.id === id);
+  if (index === -1) return;
+  const [removed] = tasks.splice(index, 1);
   saveTasks();
   render();
+  showUndoToast(removed, index);
+}
+
+function showUndoToast(task, index) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `<span>Task deleted</span>`;
+
+  const undoBtn = document.createElement("button");
+  undoBtn.type = "button";
+  undoBtn.textContent = "Undo";
+
+  const timer = setTimeout(() => toast.remove(), 5000);
+
+  undoBtn.addEventListener("click", () => {
+    clearTimeout(timer);
+    tasks.splice(index, 0, task);
+    saveTasks();
+    render();
+    toast.remove();
+  });
+
+  toast.appendChild(undoBtn);
+  toastContainer.appendChild(toast);
 }
 
 function clearCompleted() {
@@ -186,6 +210,13 @@ function clearCompleted() {
   saveTasks();
   render();
 }
+
+function updateAddBtnState() {
+  addBtn.disabled = input.value.trim().length === 0;
+}
+
+input.addEventListener("input", updateAddBtnState);
+updateAddBtnState();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -195,6 +226,7 @@ form.addEventListener("submit", (e) => {
   localStorage.setItem(LAST_PRIORITY_KEY, priorityInput.value);
   input.value = "";
   input.focus();
+  updateAddBtnState();
 });
 
 clearCompletedBtn.addEventListener("click", clearCompleted);

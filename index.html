@@ -14,8 +14,8 @@
     </div>
     <form id="task-form">
       <div class="form-row">
-        <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" maxlength="500">
-        <button type="submit">Add</button>
+        <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" maxlength="500" autofocus>
+        <button type="submit" id="add-btn" disabled>Add</button>
       </div>
       <div class="form-row">
         <label for="priority-input">Priority:</label>
@@ -34,6 +34,7 @@
       <button type="button" id="clear-completed">Clear completed</button>
     </div>
   </div>
+  <div id="toast-container"></div>
   <script src="script.js"></script>
 </body>
 </html>
